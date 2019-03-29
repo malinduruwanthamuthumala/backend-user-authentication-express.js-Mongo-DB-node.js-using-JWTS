@@ -17,6 +17,10 @@ const UserSchema = new Schema({
   age: {
     type: String,
     required:true
+  },
+  avatar:{
+    type: String,
+    
   }
 });
 module.exports = User = mongoose.model("users", UserSchema);
