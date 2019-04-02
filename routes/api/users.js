@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+const shortid = require('shortid');
 
 const gravatar = require('gravatar');
 // Load input validation
@@ -23,8 +24,10 @@ router.post("/register", (req, res) => {
       return res.status(404).json({ userexist: "user exist with the same email" });
     }
   });
+var id =shortid.generate();
 var avatar = gravatar.url('req.body.email', {s: '200', r: 'pg', d: 'mm'});
 const newUser = new User({
+        id,
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
