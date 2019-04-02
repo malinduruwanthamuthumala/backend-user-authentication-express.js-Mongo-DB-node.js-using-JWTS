@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+
+const gravatar = require('gravatar');
 // Load input validation
 
 // Load User model
@@ -11,6 +13,7 @@ const User = require("../../models/User");
 // @route POST api/users/register
 // @desc Register user
 // @access Public
+
 router.post("/register", (req, res) => {
   const email = req.body.email;
 // Find user by email
@@ -20,13 +23,13 @@ router.post("/register", (req, res) => {
       return res.status(404).json({ userexist: "user exist with the same email" });
     }
   });
-
+var avatar = gravatar.url('req.body.email', {s: '200', r: 'pg', d: 'mm'});
 const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         age:req.body.age,
-        avatar:"image1",
+        avatar,
       });
 // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
