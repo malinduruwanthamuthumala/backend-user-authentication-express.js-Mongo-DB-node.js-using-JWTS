@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const shortid = require('shortid');
+var config = require('../../config');
 
 const gravatar = require('gravatar');
 // Load input validation
@@ -70,25 +71,46 @@ const email = req.body.email;
           name: user.name
         };
 // Sign token
-        jwt.sign(
+     var token = jwt.sign(
           payload,
           keys.secretOrKey,
+          
           {
             expiresIn: 31556926 // 1 year in seconds
           },
           (err, token) => {
             res.json({
               success: true,
-              token: "Bearer " + token
+              token:token
             });
           }
         );
       } else {
-        return res
+        return res  
           .status(400)
           .json({ passwordincorrect: "Password incorrect" });
       }
     });
   });
 });
+router.post("/post", (req, res) => {
+  var token = req.headers['x-access-token'];
+ 
+  if (!token)
+    return res.status(403).send({ auth: false, message: 'No token provided.' });
+  jwt.verify(token, keys.secretOrKey, function(err, decoded) {
+    if (err){
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+    // if everything good, save to request for use in other routes
+    req.userId = decoded.id;
+    }
+    else{
+      console.log("success");
+    }
+  });
+} );   
+ 
+ 
+  
+
   module.exports = router;
