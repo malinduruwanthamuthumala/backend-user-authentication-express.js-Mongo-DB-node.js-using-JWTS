@@ -11,8 +11,7 @@ const gravatar = require('gravatar');
 
 // Load User model
 const User = require("../../models/User");
-const Post = require("../../models/Post");
-
+const Post =require("../../models/Post");
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -106,16 +105,17 @@ router.post("/post", (req, res) => {
     req.userId = decoded.id;
     }
     else{
+      console.log("success");
       const newPost = new Post({
-        id,
+       
         title: req.body.title,
         content: req.body.content,
-        
+       
       });
       newPost
-      .save()
-      .then(user => res.json(user))
-      .catch(err => console.log(err));
+            .save()
+            .then(post => res.json(post))
+            .catch(err => console.log(err));
     }
   });
 } );   
