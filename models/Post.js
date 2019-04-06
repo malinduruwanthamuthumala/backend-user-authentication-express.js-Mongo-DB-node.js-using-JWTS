@@ -11,6 +11,11 @@ const PostSchema = new Schema({
     required: true
   },
   
- 
+  postid:{
+    type:String,
+  },
+  remarks:{
+    type:String,
+  }
 });
 module.exports = User = mongoose.model("posts", PostSchema);

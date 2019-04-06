@@ -14,15 +14,30 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  age: {
+  lastname: {
     type: String,
-    required:true
+    
   },
   avatar:{
     type: String,
     
   },
   id: {
+    type:String,
+  },
+  date:{
+    type:Date,
+    default:Date.now
+  },
+  firstname: {
+    type: String,
+    
+  },
+  userlevel: {
+    type: String,
+   
+  },
+  postid:{
     type:String,
   }
 });

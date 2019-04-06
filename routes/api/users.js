@@ -32,7 +32,10 @@ const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        age:req.body.age,
+        
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
+        userlevel:req.body.userlevel,
         avatar,
       });
 // Hash password before saving in database
@@ -71,7 +74,7 @@ const email = req.body.email;
           name: user.name
         };
 // Sign token
-     var token = jwt.sign(
+     const token = jwt.sign(
           payload,
           keys.secretOrKey,
           
@@ -94,34 +97,34 @@ const email = req.body.email;
   });
 });
 
-// router.post("/logout", (req, res) => {
-//   payload={
-//     "sub": "1234567890",
-//     "name": "John Doe",
-//     "admin": true
-//   }
-//   var token = jwt.sign(
-//     payload,
-//     keys.logoutkey,
+router.post("/logout", (req, res) => {
+  payload={
+    "sub": "1234567890",
+    "name": "John Doe",
+    "admin": true
+  }
+  const token = jwt.sign(
+    payload,
+    keys.logoutkey,
     
     
-//     {
-//       expiresIn: 31556926 // 1 year in seconds
-//     },
-//     (err, token) => {
-//       res.json({
-//         success: true,
-//         token:token
-//       });
-//     }
-//   );
-// } );
+    {
+      expiresIn: 31556926 // 1 year in seconds
+    },
+    (err, token) => {
+      res.json({
+        success: true,
+        token:token
+      });
+    }
+  );
+} );
   
 
 
 router.post("/post", (req, res) => {
-  var token = req.headers['x-access-token'];
- 
+  var token = req.headers['token'];
+  var postid =shortid.generate();
   if (!token)
     return res.status(403).send({ auth: false, message: 'No token provided.' });
   jwt.verify(token, keys.secretOrKey, function(err, decoded) {
@@ -133,10 +136,10 @@ router.post("/post", (req, res) => {
     else{
       console.log("success");
       const newPost = new Post({
-       
+        postid:postid,
         title: req.body.title,
         content: req.body.content,
-       
+        remarks:req.body.remarks
       });
       newPost
             .save()
@@ -159,11 +162,17 @@ router.get("/getuser", (req, res) => {
       }
           const payload = {
             id: user.id,
-            name: user.name
+            name: user.name,
+            firstname:user.firstname,
+            lastname:user.lastname,
+            email:user.email,
           };
  
         console.log(payload); 
-     
+        res.json({
+          success: true,
+          payload:payload
+        });
     });
   });
   
