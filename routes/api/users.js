@@ -74,7 +74,7 @@ const email = req.body.email;
           name: user.name
         };
 // Sign token
-     const token = jwt.sign(
+     var token = jwt.sign(
           payload,
           keys.secretOrKey,
           
@@ -97,28 +97,28 @@ const email = req.body.email;
   });
 });
 
-router.post("/logout", (req, res) => {
-  payload={
-    "sub": "1234567890",
-    "name": "John Doe",
-    "admin": true
-  }
-  const token = jwt.sign(
-    payload,
-    keys.logoutkey,
+// router.post("/logout", (req, res) => {
+//   payload={
+//     "sub": "1234567890",
+//     "name": "John Doe",
+//     "admin": true
+//   }
+//   var token = jwt.sign(
+//     payload,
+//     keys.logoutkey,
     
     
-    {
-      expiresIn: 31556926 // 1 year in seconds
-    },
-    (err, token) => {
-      res.json({
-        success: true,
-        token:token
-      });
-    }
-  );
-} );
+//     {
+//       expiresIn: 31556926 // 1 year in seconds
+//     },
+//     (err, token) => {
+//       res.json({
+//         success: true,
+//         token:token
+//       });
+//     }
+//   );
+// } );
   
 
 
@@ -175,6 +175,19 @@ router.get("/getuser", (req, res) => {
         });
     });
   });
+
+
+  router.get('/finduserdata/:id', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json({ message: 'User Found', user: user });
+      }
+    });
+  });
   
-  
+
+
+
   module.exports = router;

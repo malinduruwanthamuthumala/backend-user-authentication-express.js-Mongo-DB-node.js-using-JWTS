@@ -37,8 +37,6 @@ const UserSchema = new Schema({
     type: String,
    
   },
-  postid:{
-    type:String,
-  }
+ 
 });
 module.exports = User = mongoose.model("users", UserSchema);
